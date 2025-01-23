@@ -4,7 +4,6 @@ import pandas as pd
 import requests
 import pymupdf4llm
 import pymupdf
-import io
 import re
 from requests.utils import quote
 import json
