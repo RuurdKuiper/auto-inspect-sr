@@ -4,4 +4,3 @@ requests
 pandas
 PyMuPDF
 pymupdf4llm
-json
