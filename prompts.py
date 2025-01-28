@@ -29,6 +29,9 @@ Do other studies by the research team highlight causes for concern (critical ret
 •	The user should pay close attention to any notices associated with the author. For example, a previous retraction due to an honest error may not warrant any concerns based on the author’s track record. 
 •	If the user does perform these searches in relation to a middle author, the user should consider whether a track record of integrity problems relating to a middle author on the index study are sufficient to introduce concerns about the trustworthiness of the index study.
 •	If comments relating to integrity issues on other studies from the author team are identified in other locations, not originating from the journal or publisher (for example, in a letter to the editor or PubPeer) we suggest that the user considers the content of the comment as it may be useful in helping to identify problematic features of the index study.
+
+Please answer these questions by first giving your reasoning, and then your answer to the question. Each subquestion should be answered with either “Yes”, “No”, “Unclear” or “NA” (Not Applicable). The overall domain judgment should be given as "No concerns", "Some concerns" or "Serious concerns".
+
 """
 
 def domain_2_prompt(title, authors, study_json):
@@ -68,4 +71,98 @@ Is the recruitment of participants implausible?
 Are there concerns about the plausibility of conducting the study using the reported methods and resources?
 •	The user should consider the plausibility of implementing the protocol as described, given the study setting and reported resources (staffing, funding).
 •	This check requires domain knowledge, for example to understand the time and resource requires to administer screening questionnaires and outcome assessments.
+
+Please answer these questions by first giving your reasoning, and then your answer to the question. Each subquestion should be answered with either “Yes”, “No”, “Unclear” or “NA” (Not Applicable). The overall domain judgment should be given as "No concerns", "Some concerns" or "Serious concerns".
+
+"""
+
+def domain_3_prompt(title, authors):
+    return f"""
+Paper Title: {title}
+Authors: {authors}
+
+Based on the above information, answer the Domain 3 questions:
+Domain 3: Inspecting text and figures
+
+Is there any plagiarised text, or text that is incompatible with the study?
+•	Plagiarised text may be detected using plagiarism software, or may be noticed while examining multiple studies included in a review. 
+•	The user should consider whether duplicated text is problematic this may not be the case for generic descriptions of methods, for example.
+•	Problematic studies may feature text which does not make sense in the context of the study.
+•	While copying and editing of tables from other papers is known to be a feature of some problematic papers, we cannot currently recommend any software capable of reliably detecting this. The user may however notice duplication of tables while looking across studies included in the systematic review, and any concerns of this nature can be reflected in the response to this check.
+
+As you do not have access to the figures or plagiarism software, you can skip that for now. But please indicate that this is the case.
+
+Please answer these questions by first giving your reasoning, and then your answer to the question. Each subquestion should be answered with either “Yes”, “No”, “Unclear” or “NA” (Not Applicable). The overall domain judgment should be given as "No concerns", "Some concerns" or "Serious concerns".
+
+"""
+
+def domain_4_prompt(title, authors):
+    return f"""
+Paper Title: {title}
+Authors: {authors}
+
+Domain 4: Inspecting results in the study
+
+Are there any unexplained discrepancies between reported data and participant inclusion criteria?
+•	The user should check to see whether any results corresponding to patient characteristics are incompatible with the eligibility criteria.
+•	It is crucial to check whether an explanation is provided in the manuscript.
+
+Are any baseline data implausible?
+•	The user should consider the plausibility of the baseline characteristics. 
+•	‘Plausibility’ includes clinical or biological plausibility and statistical plausibility. Domain knowledge is necessary to judge clinical or biological plausibility.
+•	It is important to remember that participants in a clinical trial may not be representative of any particular patient population. 
+•	Magnitude, frequency, variance, and repetition of values for distinct measurements within a table should be considered. 
+•	Known examples in problematic studies include an excess of even or odd numbers, and an excess of multiples of 5.
+•	The degree of balance between randomised arms may be informative, with excessive balance or imbalance denoting problems. The user needs to interpret observations relating to balance carefully in the context of the allocation method used (stratified randomisation or minimisation will increase balance) and the influence of rounding (which may increase the degree of similarity or dissimilarity) and correlation between variables. 
+•	The user should consider whether unusual values could be due to reporting errors (for example, standard errors reported instead of standard deviations), which may not warrant concerns about trustworthiness.
+
+Are there any discrepancies between results reported in figures, tables, and text?
+•	The user should check for contradictions where the same results are reported in multiple places (figures, tables, main text, abstract).
+•	This includes checking for discrepancies between numbers of participants described and plotted in a figure.
+
+Are the numbers of participants lost to follow-up implausible?
+•	The user should consider whether numbers of participants lost to follow-up is plausible. This may require domain knowledge, for example about the plausibility of little or no attrition given the context, condition and study protocol.
+•	It may be useful to consider what level of attrition was anticipated in the sample size calculation reported for the study. For example, if a substantial degree of attrition was anticipated, this may lead to concerns if there was actually little or no attrition in the study.
+•	Round, equal numbers of participants lost to follow-up, or numbers lost to follow-up resulting in a perfect match with the planned sample size, may be suggestive of problems, but are unlikely to be sufficient to warrant concerns unless other problematic features are also present.
+
+Are there any unexplained inconsistencies in the numbers of participants?
+•	The user should check for unexplained inconsistencies in numbers of participants reported in different parts of the manuscript.
+•	Care should be taken not to mistake differences in numbers due to e.g. loss to follow-up, exclusion of participants due to non-adherence.
+•	Large unexplained discrepancies with the planned sample size should be noted.
+
+Are any outcome data, including estimated treatment effects, implausible?
+•	The user should consider the plausibility of the outcome measurement values in each arm and estimated treatment effects. 
+•	‘Plausibility’ includes clinical or biological plausibility and statistical plausibility. Domain knowledge is necessary to judge clinical or biological plausibility.
+•	Magnitude, frequency, variance, and repetition of values for distinct measurements within a table should be considered. 
+•	While the estimated treatment effect should be considered, the user should be careful not to overinterpret the point estimate (typically the observed difference or ratio in a summary of the outcome measure for each of two study groups) without careful consideration of associated measures of statistical inference (confidence intervals, p-values). A large point estimate for a treatment effect is not unusual if it is accompanied by wide confidence intervals or nonsignificant p-values.
+•	It may be useful to compare the estimated effects and CIs to those from other studies in a meta-analysis, to identify unexplained discrepancies. Meta-analysis may be conducted after trustworthiness assessment has been performed, and so this might not come to light until later on. It might therefore be necessary to revisit the assessment should problems come to light when conducting meta-analysis. 
+
+Are the means and variances of integer data impossible?
+•	This check only applies to variables which can only take integer values (e.g. 1,2,3,4,…).
+•	For these variables, only certain values of the mean and standard deviation are possible for a given sample size. 
+•	Consistency of reported means and standard deviations for a given sample size may be assessed using the GRIM and GRIMMER techniques. 
+•	Online implementations of these checks are available at http://nickbrown.fr/GRIM (GRIM only), http://www.prepubmed.org/grimmer/ , and https://errors.shinyapps.io/scrutiny/ . The last of these offers a convenient interface for checking several of these at once. 
+•	Measures of time, such as age in years or disease duration in months, may be subjected to GRIM/ GRIMMER assessment only if recorded in whole units (e.g. years or months).
+
+Are there errors in statistical results?
+•	The user should check whether results of statistical analyses are consistent with reported summary data. For example, where a t-test has been used, the user can check whether the reported p-value is consistent with the reported group means and standard deviations. 
+•	Caution is needed however, as p-values based on tests of continuous variables will not generally be exactly reproducible from rounded summary data. The user should consider whether the p-value is consistent with the reported summary data. 
+•	As an example, suppose a paper reports results of a t-test for two groups of 30 participants. In group 1, there is a reported mean of 20 and a standard deviation of 4. In group 2, there is a reported mean of 21 and a standard deviation of 2. The p-value is reported as p=0.02. If we try to reproduce the result using the summary data, we get a p-value of p=0.23, which may appear to contradict the reported result. However, the reported summary data is rounded. We can find the smallest p-value that would be consistent with the reported data by using values which would be rounded to those reported in the paper, while making the difference in means as large as possible and the standard deviations as small as possible. In this case, the actual group means could be 19.5 and 21.449, and the standard deviations 3.5 and 1.5. The p-value in this case would be 0.006, which is clearly smaller than the reported value. The summary data are therefore consistent with the reported p-value. If we wanted to see how large the p-value could be while remaining consistent with the summary data, we would make the means as similar as possible and the standard deviations as large as possible, while ensuring that the values would round to the reported summary data. 
+•	For categorical data analysed by chi-squared test or similar, where frequencies are reported, the user can attempt to reproduce the p-value from the reported data, without concerns relating to rounding of summary data. 
+•	The study authors may have used variations of the reported statistical tests. For example, variations of the chi-squared test and t-test are commonly used (e.g. use of Yates’ correction, or unequal variances t-tests) and where a discrepancy is found, the user should consider whether this could explain the issue. 
+•	Following the logic set out above, for continuous data, it may be indicative of problems if the statistical results can all be reproduced exactly from the summary data, as this may imply that no underlying dataset was analysed in producing the results. 
+
+Are any other contradictions implied by the data?
+•	There may be other instances of contradictory results that would not be detected using the other checks in this domain.
+•	Subgroup counts or means could conflict with results for the overall cohort.
+•	A reported value could fall outside of a reported range.
+•	Some combinations of outcome are not possible. For example, it is not possible to have more birth events (with one “birth event” defined as the birth of at least one child) than pregnancies.
+
+
+Are there inconsistencies in descriptions of methods and results across publications describing the study?
+•	The user should check for major unexplained discrepancies between publications associated with the study, such as a conference abstract and a main results paper. 
+•	Conflicting results, group sizes, or descriptions of methods could warrant concerns.
+
+Please answer these questions by first giving your reasoning, and then your answer to the question. Each subquestion should be answered with either “Yes”, “No”, “Unclear” or “NA” (Not Applicable). Even if the answer is "No", provide the details and precise data and numbers from the paper which made you conclude this. The overall domain judgment should be given as "No concerns", "Some concerns" or "Serious concerns".
+
 """

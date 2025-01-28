@@ -54,7 +54,7 @@ The following describes key points to consider in relation to individual checks 
 
 You are here to help me with the following article:
 {pdf_text}
-        """},
+"""},
         {"role": "user", "content": prompt}
     ]
     )

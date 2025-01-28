@@ -9,7 +9,7 @@ from requests.utils import quote
 import json
 
 from utils import *
-from prompts import domain_1_prompt, domain_2_prompt
+from prompts import domain_1_prompt, domain_2_prompt, domain_3_prompt, domain_4_prompt
 
 # Load the Retraction Watch dataset
 # Initialization
@@ -29,6 +29,8 @@ if uploaded_file:
             'last_uploaded_file': uploaded_file,
             'domain_1_response': None,
             'domain_2_response': None,
+            'domain_3_response': None,
+            'domain_4_response': None,
             'pdf_text': None,
             'authors': None,
             'title': None,
@@ -92,11 +94,11 @@ if uploaded_file:
             if "Error" in study_json:
                 st.error(study_json["Error"])
             else:
-                with st.expander("Full Study JSON"):
+                with st.expander("Full ClinicalTrials.gov JSON"):
                     st.json(study_json)
 
                 st.download_button(
-                    label="Download Study JSON",
+                    label="Download ClinicalTrials.gov JSON",
                     data=json.dumps(study_json, indent=2),
                     file_name="study.json",
                     mime="application/json"
@@ -109,3 +111,31 @@ if uploaded_file:
         if st.session_state.domain_2_response:
             st.write("**Domain 2 Response:**")
             st.write(st.session_state.domain_2_response)
+
+    # Domain 3: Inspecting text and figures
+    with st.container():
+        st.header("Domain 3: Inspecting text and figures")
+
+        if st.button("Run Domain 3 Analysis"):
+
+            prompt = domain_3_prompt(title=title, authors=authors)
+            st.session_state.domain_3_response = get_chatgpt_response(prompt, pdf_text)
+
+        # Always display Domain 3 Response if it exists
+        if st.session_state.domain_3_response:
+            st.write("**Domain 3 Response:**")
+            st.write(st.session_state.domain_3_response)
+
+    # Domain 4: Inspecting Conduct, Governance, and Transparency
+    with st.container():
+        st.header("Domain 4: Inspecting Conduct, Governance, and Transparency")
+
+        if st.button("Run Domain 4 Analysis"):
+
+            prompt = domain_4_prompt(title=title, authors=authors)
+            st.session_state.domain_4_response = get_chatgpt_response(prompt, pdf_text)
+
+        # Always display Domain 4 Response if it exists
+        if st.session_state.domain_4_response:
+            st.write("**Domain 4 Response:**")
+            st.write(st.session_state.domain_4_response)
