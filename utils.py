@@ -20,7 +20,7 @@ def get_chatgpt_response(prompt, pdf_text):
     client = OpenAI()
 
     completion = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-4o",
     messages=[
         {"role": "system", "content": f"""You are a helpful assistant. 
          
